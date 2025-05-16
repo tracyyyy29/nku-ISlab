@@ -79,7 +79,13 @@ class MNIST_MLP(object):
         output_shapem3[3] = out_classes
 
         self.net.createMlpLayer('fc3', input_shapem3, weight_shapem3, output_shapem3)
+        # softmax
+        input_softmax=pycnnl.IntVector(3)
+        input_softmax[0]=batch_size
+        input_softmax[1]=1
+        input_softmax[2]=out_classes
 
+        self.net.createSoftmaxLayer('softmax',input_softmax,axis=2)
 
     def load_mnist(self, file_dir, is_images = 'True'):
         # Read binary data
@@ -157,8 +163,8 @@ class MNIST_MLP(object):
         accuracy = np.mean(pred_results == self.test_data[:,-1])
         print('Accuracy in test set: %f' % accuracy)
 
-HIDDEN1 = 64
-HIDDEN2 = 16
+HIDDEN1 = 128
+HIDDEN2 = 64
 OUT = 10
 def run_mnist():
     batch_size = 10000
